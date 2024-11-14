@@ -4,22 +4,22 @@ const ledgerSchema=new mongoose.Schema(
     {
         customer:
         {
-            type:'string',
+            type:string,
+            required:false,
+        },
+
+        id:{
+            type:Number,
             required:true,
         },
 
         orderValue:
         {
-            type:String,
-            required:true,
+            type:Number,
+            required:false,
         },
 
-        itemList:
-        {
-            type:String,
-            required:true,
-
-        },
+        
 
         dueAmount:
         {
@@ -41,3 +41,5 @@ const ledgerSchema=new mongoose.Schema(
 
     }
 ) 
+const ledger = mongoose.model("ledger", ledgerSchema);
+module.exports = ledger;
