@@ -32,11 +32,11 @@ const updateProduct = async (req, res) => {
   try {
     const { id, Quantity } = req.body;
 
-    // Find product by productId and update the Quantity field
+    
     const updatedProductt = await Product.findOneAndUpdate(
-      { productId: id }, // Find product by productId
-      { Quantity },       // Update the Quantity field
-      { new: true }       // Return the updated document
+      { productId: id }, 
+      { Quantity },       
+      { new: true }       
     );
 
     
@@ -56,7 +56,8 @@ const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const product = await Product.findByIdAndDelete(id);
+    const product = await Product.findOneAndDelete({productId:id});
+    
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
