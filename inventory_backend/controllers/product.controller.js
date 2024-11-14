@@ -12,7 +12,7 @@ const getProducts = async (req, res) => {
 const getProduct = async (req, res) => {
   try {
     const { id:productId } = req.params;
-    const product = await Product.findById(productId);
+    const product = await Product.findOne(productId);
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
