@@ -10,12 +10,10 @@ router.get("/:id", getProduct);
 router.post("/", createProduct);
 
 // update a product
-router.put("/:id", updateProduct);
+router.put("/:id/:Quantity", updateProduct);
 
 // delete a product
 router.delete("/:id", deleteProduct);
-
-
 
 
 module.exports = router;

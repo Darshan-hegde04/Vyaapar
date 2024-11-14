@@ -30,15 +30,22 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id, Quantity } = req.body;
 
-    const product = await Product.findByIdAndUpdate(id, req.body);
+    // Find product by productId and update the Quantity field
+    const updatedProductt = await Product.findOneAndUpdate(
+      { productId: id }, // Find product by productId
+      { Quantity },       // Update the Quantity field
+      { new: true }       // Return the updated document
+    );
+
+    
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    const updatedProduct = await Product.findById(id);
+    const updatedProduct = await Product.findOne({Quantity:Quantity});
     res.status(200).json(updatedProduct);
   } catch (error) {
     res.status(500).json({ message: error.message });
