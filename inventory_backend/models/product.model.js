@@ -13,6 +13,12 @@ const productSchema=new mongoose.Schema(
         required:false,
     },
 
+    productId:
+    {
+        type:Number,
+        required:true,
+    },
+
     barcodeNo:
     {
         type: Number,
