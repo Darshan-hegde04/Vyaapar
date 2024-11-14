@@ -1,5 +1,5 @@
 {
-  "name": "simple-crud-app",
+  "name": "name",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,11 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
+    "express": "^4.21.1",
     "mongodb": "^6.3.0",
     "mongoose": "^8.8.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.1.7"
   }
 }
