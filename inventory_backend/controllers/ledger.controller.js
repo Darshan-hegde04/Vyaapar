@@ -37,11 +37,20 @@ const createLedger = async (req, res) => {
 // Update a ledger entry by ID
 const updateLedger = async (req, res) => {
   try {
-    const { id } = req.params;
-    const ledger = await Ledger.findOneAndUpdate({ id }, req.body, { new: true });
+    const { LedgerId } = req.params;  // Assuming LedgerId is passed as a parameter in the URL
+    const { Status } = req.body;       // The Status is provided in the request body
+
+    // Find by LedgerId and update Status field only
+    const ledger = await Ledger.findOneAndUpdate(
+      { LedgerId },                     // Find by LedgerId
+      { Status },                       // Update Status
+      { new: true }                     // Return the updated document
+    );
+
     if (!ledger) {
       return res.status(404).json({ message: "Ledger not found" });
     }
+
     res.status(200).json(ledger);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -49,10 +58,11 @@ const updateLedger = async (req, res) => {
 };
 
 
+// Delete a ledger entry by ID
 const deleteLedger = async (req, res) => {
   try {
     const { id } = req.params;
-    const ledger = await Ledger.findOneAndDelete({ id });
+    const ledger = await Ledger.findOneAndDelete({ledgerid:id});
     if (!ledger) {
       return res.status(404).json({ message: "Ledger not found" });
     }

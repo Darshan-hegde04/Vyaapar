@@ -1,45 +1,33 @@
 const mongoose = require('mongoose');
 
-const ledgerSchema=new mongoose.Schema(
-    {
-        customer:
-        {
-            type:string,
-            required:false,
-        },
+const ledgerSchema = new mongoose.Schema({
+  customer: {
+    type: String,
+    required: false,
+  },
+  ledgerid: {
+    type: Number,
+    required: true,
+  },
+  orderValue: {
+    type: Number,
+    required: false,
+  },
+  dueAmount: {
+    type: Number,
+    required: false,
+  },
+  dueDate: {
+    type: Date,
+    required: false,
+  },
+  Status: {
+    type: Boolean,
+    required: false,
+  },
+}, {
+  timestamps: true
+});
 
-        id:{
-            type:Number,
-            required:true,
-        },
-
-        orderValue:
-        {
-            type:Number,
-            required:false,
-        },
-
-        
-
-        dueAmount:
-        {
-            type:Number,
-            required:false,
-        },
-
-        dueDate:
-        {
-            type:Date,
-            required:false,
-        },
-
-        Status:
-        {
-            type:Selection,
-            required:false,
-        }
-
-    }
-) 
-const ledger = mongoose.model("ledger", ledgerSchema);
-module.exports = ledger;
+const Ledger = mongoose.model("Ledger", ledgerSchema);
+module.exports = Ledger;

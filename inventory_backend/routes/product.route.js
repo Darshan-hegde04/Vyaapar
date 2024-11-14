@@ -1,19 +1,31 @@
 const express = require("express");
-const Product = require("../models/product.model.js");
+const {
+  getProducts,
+  getProduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  uploadProducts,
+} = require("../controllers/product.controller.js");
+
 const router = express.Router();
-const {getProducts, getProduct, createProduct, updateProduct, deleteProduct} = require('../controllers/product.controller.js');
 
+// Get all products
+router.get("/", getProducts);
 
-router.get('/', getProducts);
+// Get a single product by ID
 router.get("/:id", getProduct);
 
+// Create a new product
 router.post("/", createProduct);
 
-// update a product
-router.put("/:id/:Quantity", updateProduct);
+// Update a product (via productId in the request body)
+router.put("/", updateProduct);
 
-// delete a product
+// Delete a product by ID
 router.delete("/:id", deleteProduct);
 
+// Upload products via CSV/Excel file
+router.post("/upload", uploadProducts);
 
 module.exports = router;
