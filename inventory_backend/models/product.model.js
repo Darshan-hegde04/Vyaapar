@@ -13,7 +13,7 @@ const productSchema=new mongoose.Schema(
         required:false,
     },
 
-    BarcodeNo:
+    barcodeNo:
     {
         type: Number,
         required:false,
@@ -62,6 +62,7 @@ const productSchema=new mongoose.Schema(
 {
     timestamps: true
 }
+)
 const Product = mongoose.model("Product", ProductSchema);
 
 module.exports = Product;
