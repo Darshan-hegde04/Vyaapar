@@ -31,6 +31,3 @@ mongoose
   });
 
 
-app.get('/',(res,req){
-)
-}
