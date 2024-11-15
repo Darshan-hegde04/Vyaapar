@@ -6,7 +6,7 @@ const {
   updateProduct,
   deleteProduct,
   uploadProducts,
-  getProductsBelowThreshold, // Directly import the function here
+  getProductsBelowThreshold
 } = require("../controllers/product.controller.js");
 
 const router = express.Router();
@@ -30,6 +30,6 @@ router.delete("/:id", deleteProduct);
 router.post("/upload", uploadProducts);
 
 // Get products with quantity below a given threshold
-router.get("/products/threshold/:threshold", getProductsBelowThreshold);
+router.get("/threshold/:threshold", getProductsBelowThreshold);
 
 module.exports = router;

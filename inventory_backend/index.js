@@ -6,10 +6,11 @@ const fileUpload = require("express-fileupload");
 // Import routes
 const productRoute = require("./routes/product.route.js");
 const ledgerRoute = require("./routes/ledger.route.js");
-const checkoutRoute = require("./routes/checkout.route.js"); // Import checkout route
+const checkoutRoute = require("./routes/checkout.route.js");
 const orderRoute = require("./routes/order.route.js");
 
 const app = express();
+const PORT = 3000;
 
 // Middleware setup
 app.use(express.json());
@@ -19,9 +20,8 @@ app.use(fileUpload());
 // Routes
 app.use("/vyaaparpro/products", productRoute);
 app.use("/vyaaparpro/ledger", ledgerRoute);
-app.use("/vyaaparpro/checkout", checkoutRoute); // Use the checkout route
-app.use("/vyaaparpro/orders", orderRoute); 
-
+app.use("/vyaaparpro/checkout", checkoutRoute);
+app.use("/vyaaparpro/orders", orderRoute);
 
 // Root route
 app.get("/", (req, res) => {
@@ -30,17 +30,15 @@ app.get("/", (req, res) => {
 
 // Database Connection
 mongoose
-  .connect(
-    "mongodb+srv://admin:tushar1234@backenddb.istp5.mongodb.net/BackendDB?retryWrites=true&w=majority&appName=backendDB"
-  )
+  .connect("mongodb+srv://admin:tushar1234@backenddb.istp5.mongodb.net/BackendDB?retryWrites=true&w=majority&appName=backendDB", { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("Connected to database!");
-    app.listen(3000, () => {
-      console.log("Server is running on port 3000");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
   })
   .catch((error) => {
-    console.log("Connection failed!", error);
+    console.error("Connection failed!", error);
   });
 
 module.exports = app;
