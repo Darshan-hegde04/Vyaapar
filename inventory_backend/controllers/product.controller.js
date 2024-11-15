@@ -4,6 +4,24 @@ const path = require("path");
 const csvParser = require("csv-parser");
 const xlsx = require("xlsx");
 
+const getProductsBelowThreshold = async (req, res) => {
+  const { threshold } = req.params; // Extract threshold from URL parameter
+
+  try {
+    // Query products where the quantity is below the threshold
+    const products = await Product.find({ Quantity: { $lt: threshold } });
+
+    if (products.length === 0) {
+      return res.status(404).json({ message: "No products found below the threshold" });
+    }
+
+    // Send the products back as a response
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Get all products
 const getProducts = async (req, res) => {
   try {
@@ -115,4 +133,4 @@ const uploadProducts = async (req, res) => {
   }
 };
 
-module.exports = { getProducts, getProduct, createProduct, updateProduct, deleteProduct, uploadProducts };
+module.exports = { getProducts, getProduct, createProduct, updateProduct, deleteProduct, uploadProducts,getProductsBelowThreshold};

@@ -1,71 +1,59 @@
-const Checkout = require("../models/checkout.model");
+const Product = require("../models/product.model");
+const Order = require("../models/order.model");
 
-// Get all checkout records
-const getCheckouts = async (req, res) => {
-  try {
-    const checkouts = await Checkout.find({});
-    res.status(200).json(checkouts);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+exports.createCheckout = async (req, res) => {
+    try {
+        const { customerName, product } = req.body;
 
-// Get a specific checkout record by ID
-const getCheckout = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const checkout = await Checkout.findOne({ _id: id });
-    if (!checkout) {
-      return res.status(404).json({ message: "Checkout record not found" });
+        // Check if product items exist in the request
+        if (!product || product.length === 0) {
+            return res.status(400).json({ message: "No items provided for the order" });
+        }
+
+        let totalValue = 0;
+        let totalQuantity = 0;
+        const orderItems = [];
+
+        // Iterate over each product item in the order
+        for (const item of product) {
+            const productDetails = await Product.findOne({ productId: item.productId });
+
+            // Product not found in the database
+            if (!productDetails) {
+                return res.status(404).json({ message: `Product with ID ${item.productId} not found` });
+            }
+
+            // Calculate total price for the item
+            const productTotalPrice = productDetails.BuyingPrice * item.Quantity;
+            totalValue += productTotalPrice;
+            totalQuantity += item.Quantity;
+
+            // Add item to order items
+            orderItems.push({
+                productId: productDetails._id,
+                quantity: item.Quantity,
+            });
+        }
+
+        // Create and save the order
+        const order = new Order({
+            customerName,
+            products: orderItems,
+            totalValue,
+            totalQuantity
+        });
+        await order.save();
+
+        // Send success response
+        res.status(201).json({
+            message: "Order created successfully",
+            order,
+            totalValue,
+            totalQuantity
+        });
+
+    } catch (error) {
+        console.error("Error in createCheckout:", error);  // Improved error logging
+        res.status(500).json({ message: "Internal server error" });
     }
-    res.status(200).json(checkout);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Create a new checkout entry
-const createCheckout = async (req, res) => {
-  try {
-    const checkout = await Checkout.create(req.body);
-    res.status(201).json(checkout);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Update a checkout entry by ID
-const updateCheckout = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const checkout = await Checkout.findByIdAndUpdate(id, req.body, { new: true });
-    if (!checkout) {
-      return res.status(404).json({ message: "Checkout record not found" });
-    }
-    res.status(200).json(checkout);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Delete a checkout entry by ID
-const deleteCheckout = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const checkout = await Checkout.findByIdAndDelete(id);
-    if (!checkout) {
-      return res.status(404).json({ message: "Checkout record not found" });
-    }
-    res.status(200).json({ message: "Checkout deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-module.exports = {
-  getCheckouts,
-  getCheckout,
-  createCheckout,
-  updateCheckout,
-  deleteCheckout,
 };
